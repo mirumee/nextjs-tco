@@ -1,0 +1,14 @@
+{
+  "name": "my-app",
+  "compatibility_date": "2024-07-29",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "next.js-tco",
+      "id": "06779da6940b431db6e566b4846d64db"
+    }
+  ],
+  "pages_build_output_dir": ".vercel/output/static"
+}
