@@ -19,6 +19,7 @@ export default function RevalidateButton() {
         setMessage("Revalidation failed.");
       }
     } catch (err) {
+      console.error(err);
       setMessage("Error occurred during revalidation.");
     } finally {
       setLoading(false);
