@@ -1,55 +1,89 @@
+import fs from "fs";
+import path from "path";
 import Image from "next/image";
+import Link from "next/link";
+
+function getPageLinks() {
+  const pagesDir = path.join(process.cwd(), "src/app");
+  const links: { label: string; path: string }[] = [];
+  const excludedDirs = new Set(["api", "components"]);
+
+  function traverse(dir: string, routePrefix: string) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        if (excludedDirs.has(entry.name)) continue;
+        // Build current route for subdirectory pages.
+        const currentRoute = routePrefix + "/" + entry.name;
+        traverse(path.join(dir, entry.name), currentRoute);
+      } else if (entry.isFile() && entry.name === "page.tsx") {
+        // Exclude the home page (empty routePrefix)
+        if (routePrefix !== "") {
+          links.push({ label: routePrefix, path: routePrefix });
+        }
+      }
+    }
+  }
+
+  traverse(pagesDir, "");
+  return links;
+}
+
+function DancingPig() {
+  return (
+    <svg
+      width="150"
+      height="150"
+      viewBox="0 0 200 200"
+      xmlns="http://www.w3.org/2000/svg"
+      className="mx-auto"
+    >
+      <g>
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          values="-10 100 100; 10 100 100; -10 100 100"
+          dur="2s"
+          repeatCount="indefinite"
+        />
+        {/* Pig face */}
+        <circle cx="100" cy="100" r="40" fill="#FFC0CB" stroke="#E91E63" strokeWidth="2" />
+        {/* Left ear */}
+        <polygon points="70,60 80,30 90,60" fill="#FFC0CB" stroke="#E91E63" strokeWidth="2" />
+        {/* Right ear */}
+        <polygon points="130,60 120,30 110,60" fill="#FFC0CB" stroke="#E91E63" strokeWidth="2" />
+        {/* Eyes */}
+        <circle cx="85" cy="90" r="5" fill="#000" />
+        <circle cx="115" cy="90" r="5" fill="#000" />
+        {/* Snout */}
+        <ellipse cx="100" cy="115" rx="12" ry="8" fill="#FFB6C1" stroke="#E91E63" strokeWidth="2" />
+        {/* Nostrils */}
+        <circle cx="95" cy="115" r="1.5" fill="#000" />
+        <circle cx="105" cy="115" r="1.5" fill="#000" />
+      </g>
+    </svg>
+  );
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const pageLinks = getPageLinks();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+  return (
+    <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-1 flex-col gap-8 row-start-2 items-center sm:items-center">
+        <DancingPig />
+        <h2 className="text-xl font-bold mt-8">Available Pages</h2>
+        <ul className="list-disc ml-4 text-sm">
+          {pageLinks.map((link) => (
+            <li key={link.path}>
+              <Link href={link.path} className="text-blue-600 hover:underline">
+                {link.label} ({link.path})
+              </Link>
+            </li>
+          ))}
+        </ul>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+      <footer className="flex gap-6 flex-wrap items-center justify-center">
         <p className="text-sm text-gray-500 dark:text-gray-400">
           Made with 🤪 by someone who probably needs more coffee
         </p>
