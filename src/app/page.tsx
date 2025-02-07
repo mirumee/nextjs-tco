@@ -1,33 +1,4 @@
-import fs from "fs";
-import path from "path";
-import Image from "next/image";
 import Link from "next/link";
-
-function getPageLinks() {
-  const pagesDir = path.join(process.cwd(), "src/app");
-  const links: { label: string; path: string }[] = [];
-  const excludedDirs = new Set(["api", "components"]);
-
-  function traverse(dir: string, routePrefix: string) {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (const entry of entries) {
-      if (entry.isDirectory()) {
-        if (excludedDirs.has(entry.name)) continue;
-        // Build current route for subdirectory pages.
-        const currentRoute = routePrefix + "/" + entry.name;
-        traverse(path.join(dir, entry.name), currentRoute);
-      } else if (entry.isFile() && entry.name === "page.tsx") {
-        // Exclude the home page (empty routePrefix)
-        if (routePrefix !== "") {
-          links.push({ label: routePrefix, path: routePrefix });
-        }
-      }
-    }
-  }
-
-  traverse(pagesDir, "");
-  return links;
-}
 
 function DancingPig() {
   return (
@@ -66,24 +37,13 @@ function DancingPig() {
 }
 
 export default function Home() {
-  const pageLinks = getPageLinks();
-
   return (
-    <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-1 flex-col gap-8 row-start-2 items-center sm:items-center">
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-8 items-center flex-1">
         <DancingPig />
-        <h2 className="text-xl font-bold mt-8">Available Pages</h2>
-        <ul className="list-disc ml-4 text-sm">
-          {pageLinks.map((link) => (
-            <li key={link.path}>
-              <Link href={link.path} className="text-blue-600 hover:underline">
-                {link.label} ({link.path})
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <h2 className="text-xl font-bold mt-8">Welcome to the Home Page</h2>
       </main>
-      <footer className="flex gap-6 flex-wrap items-center justify-center">
+      <footer className="flex gap-6 flex-col items-center justify-center">
         <p className="text-sm text-gray-500 dark:text-gray-400">
           Made with 🤪 by someone who probably needs more coffee
         </p>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { RevalidateResponse } from "@/app/api/revalidate-on-demand/route";
 
 export default function RevalidateButton() {
   const [loading, setLoading] = useState(false);
@@ -11,7 +12,7 @@ export default function RevalidateButton() {
     setMessage("");
     try {
       const res = await fetch("/api/revalidate-on-demand");
-      const data = await res.json();
+      const data = await res.json() as RevalidateResponse;
       if (data.revalidated) {
         setMessage("Page revalidated successfully!");
       } else {

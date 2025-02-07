@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    ppr: "incremental",
+  },
   /* config options here */
 };
 
