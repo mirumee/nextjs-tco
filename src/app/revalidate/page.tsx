@@ -38,6 +38,7 @@ export const revalidate = 10
 
 
 export default async function Page() {
+  const generatedAt = new Date().toLocaleString();
   const pattern: Pattern[] = await fetch(`https://www.colourlovers.com/api/patterns/random?format=json`).then(
     (res) => res.json()
   )
@@ -47,6 +48,9 @@ export default async function Page() {
       <p>{pattern[0].title}</p>
       <p>{pattern[0].imageUrl}</p>
       <Image alt={pattern[0].title} src={pattern[0].imageUrl} width={1000} height={1000}/>
+      <p className="text-lg">
+        Page generated at: <span className="font-mono">{generatedAt}</span>
+      </p>
     </main>
   )
 }
