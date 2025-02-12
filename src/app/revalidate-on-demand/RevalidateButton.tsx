@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { RevalidateResponse } from "@/app/api/revalidate-on-demand/route";
+// import { RevalidateResponse } from "@/app/api/revalidate-on-demand/route";
 
 export default function RevalidateButton() {
   const [loading, setLoading] = useState(false);
@@ -11,13 +11,13 @@ export default function RevalidateButton() {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch("/api/revalidate-on-demand");
-      const data = await res.json() as RevalidateResponse;
-      if (data.revalidated) {
-        setMessage("Page revalidated successfully!");
-      } else {
-        setMessage("Revalidation failed.");
-      }
+      // const res = await fetch("/api/revalidate-on-demand");
+      // const data = await res.json() as RevalidateResponse;
+      // if (data.revalidated) {
+      //   setMessage("Page revalidated successfully!");
+      // } else {
+      //   setMessage("Revalidation failed.");
+      // }
     } catch (err) {
       console.error(err);
       setMessage("Error occurred during revalidation.");
