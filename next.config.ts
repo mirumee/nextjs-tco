@@ -16,10 +16,10 @@ const nextConfig: NextConfig = {
   /* config options here */
 };
 
-async function setupDevCloudflarePlatform() {
-  await setupDevPlatform();
-}
+// async function setupDevCloudflarePlatform() {
+//   await setupDevPlatform();
+// }
 
-setupDevCloudflarePlatform()
+// setupDevCloudflarePlatform()
 
 export default nextConfig;
