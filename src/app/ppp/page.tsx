@@ -1,5 +1,5 @@
-// import Clock from "@/components/Clock";
-// import { Suspense } from "react";
+import Clock from "@/components/Clock";
+import { Suspense } from "react";
 
 export const experimental_ppr = true;
 
@@ -12,9 +12,9 @@ export default function PartialPrerenderPage() {
       This is static part of the page.
 
       ⬇️ This is a dynamic component that is rendered on the server.
-      {/* <Suspense fallback={<p>Searching for the time...</p>}>
+      <Suspense fallback={<p>Searching for the time...</p>}>
         <Clock />
-      </Suspense> */}
+      </Suspense>
     </div>
   );
 } 
